@@ -228,11 +228,7 @@ class CommitsController < OSX::NSObject
   end
   
   def fetch_git_repository
-    begin
-      @repo = Grit::Repo.new(REPOSITORY_LOCATION)
-    rescue Grit::InvalidGitRepositoryError
-      return false
-    end
+    @repo = RCSetta::open REPOSITORY_LOCATION
   end
   
   def fetch_commits_for(branch, quanity, offset = 0)

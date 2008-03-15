@@ -10,8 +10,8 @@ require 'rubygems'
 require 'pathname'
 require 'osx/cocoa'
 require 'mime-types/lib/mime/types'
-require 'grit/lib/grit'
 require 'lib/time_extensions'
+require 'lib/rcsetta'
 require 'InfoWindowController'
 
 OSX.ns_import 'CommitSummaryCell'
@@ -40,8 +40,9 @@ class ApplicationController < OSX::NSObject
     return true
   end
   
-  def awakeFromNib
-    repo
+  def awakeFromNib    
+    @repo = RCSetta::open(REPOSITORY_LOCATION)
+    
     @window.delegate = self
     column = @commits_table.tableColumns[0]
     cell = CommitSummaryCell.alloc.init

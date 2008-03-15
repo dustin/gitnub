@@ -255,8 +255,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DDCA7070ACC9A6100E082CE /* InfoPlist.strings in Resources */,
 				4DDCA7080ACC9A6100E082CE /* rb_main.rb in Resources */,
+				4DDCA7070ACC9A6100E082CE /* InfoPlist.strings in Resources */,
 				288853050D7CE2E500862D67 /* LICENSE in Resources */,
 				2888530D0D7CEA5200862D67 /* gitnub-icon.icns in Resources */,
 				288853C90D7E06A600862D67 /* commit.html in Resources */,
