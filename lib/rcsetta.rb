@@ -100,14 +100,24 @@ module RCSetta
   # Detect a repo type and open it.
   def RCSetta::open(path)
     epath = File.expand_path path
+    RCSetta::search_up epath.split(/\//)
+  end
 
-    driver = SCM_DRIVERS.detect{|p, c| File.exist?(File.join(epath, p))}
+  private
+
+  # Look upwards until we find something we understand, or we can't go up any
+  # further.
+  def RCSetta::search_up(paths)
+    raise "Cannot detect repo type from #{path}" if paths.empty?
+    path=paths.join '/'
+    driver = SCM_DRIVERS.detect{|p, c| File.exist?(File.join(path, p))}
     if driver
-      driver.last.new epath
+      driver.last.new path
     else
-      raise "Cannot detect repo type from #{path}"
+      RCSetta::search_up(paths[0..-2])
     end
   end
+
 
 end
 
