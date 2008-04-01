@@ -11,7 +11,7 @@ module Grit
   class Head
     attr_reader :name
     attr_reader :commit
-    
+
     # Instantiate a new Head
     #   +name+ is the name of the head
     #   +commit+ is the Commit that the head points to
@@ -21,7 +21,7 @@ module Grit
       @name = name
       @commit = commit
     end
-    
+
     # Find all Heads
     #   +repo+ is the Repo
     #   +options+ is a Hash of options
@@ -30,14 +30,22 @@ module Grit
     def self.find_all(repo, options = {})
       default_options = {:sort => "committerdate",
                          :format => "%(refname)%00%(objectname)"}
-                         
+
       actual_options = default_options.merge(options)
       
       output = repo.git.for_each_ref(actual_options, "refs/heads")
                  
       self.list_from_string(repo, output)
     end
-    
+
+    # Get the HEAD revision of the repo.
+    def self.current(repo, options = {})
+      head = File.open(File.join(repo.path, 'HEAD')).read.chomp
+      if /ref: refs\/heads\/(.*)/.match(head)
+        self.new($1, repo.git.rev_parse(options, 'HEAD'))
+      end
+    end
+
     # Parse out head information into an array of baked head objects
     #   +repo+ is the Repo
     #   +text+ is the text output from the git command

@@ -37,6 +37,7 @@ class CommitsController < OSX::NSObject
     end
     
     if(fetch_git_repository)
+      setup_current_branch
       setup_commit_detail_view
       fetch_commits_for @branch, @offset
       setup_branches_menu
@@ -234,7 +235,7 @@ class CommitsController < OSX::NSObject
       return false
     end
   end
-  
+
   def fetch_commits_for(branch, quanity, offset = 0)
     @commits = @repo.commits(branch, quanity, offset)
   end
@@ -257,6 +258,11 @@ class CommitsController < OSX::NSObject
   def setup_commit_detail_view
     commit_detail = File.join(NSBundle.mainBundle.bundlePath, "Contents", "Resources", "commit.html")
     @commit_details.mainFrame.loadRequest(NSURLRequest.requestWithURL(NSURL.fileURLWithPath(commit_detail)))
+  end
+
+  def setup_current_branch
+    head = @repo.head || @repo.heads.first
+    @branch = head.name.to_sym
   end
   
   def set_html(element, html)
