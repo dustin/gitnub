@@ -70,6 +70,10 @@ module RCSetta
       self.path=path
     end
 
+    def head
+      branches.first
+    end
+
     def inspect
       %Q{#<HGRepo "#{@path}>"}
     end
